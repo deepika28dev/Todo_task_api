@@ -82,19 +82,54 @@ curl -X POST http://localhost:8000/api/tasks/ \
 
 ### 2. Get All Tasks (GET)
 **Endpoint:** `/`
-**Query Params:**
-- `page` (int): Page number (default: 1)
-- `per_page` (int): Items per page (default: 10)
-- `completed` (true/false): Filter by completion status
-- `sort` (str): Field to sort by (default: created_at)
-- `order` (asc/desc): Sort order (default: desc)
+**Description:** Retrieve a list of tasks.
 
 **Curl Example:**
 ```bash
-curl "http://localhost:8000/api/tasks/?page=1&per_page=5"
+curl "http://localhost:8000/api/tasks/"
 ```
 
-### 3. Get Single Task (GET)
+### 3. Filtering
+**Endpoint:** `/`
+**Query Param:** `completed` (true/false)
+
+Filter tasks by their completion status.
+
+**Example: Get only completed tasks**
+```bash
+curl "http://localhost:8000/api/tasks/?completed=true"
+```
+**Example: Get only pending tasks**
+```bash
+curl "http://localhost:8000/api/tasks/?completed=false"
+```
+
+### 4. Sorting
+**Endpoint:** `/`
+**Query Params:**
+- `sort`: Field to sort by (e.g., `created_at`, `title`). Default: `created_at`.
+- `order`: Sort direction (`asc` or `desc`). Default: `desc`.
+
+**Example: Sort by title in ascending order**
+```bash
+curl "http://localhost:8000/api/tasks/?sort=title&order=asc"
+```
+
+### 5. Pagination
+**Endpoint:** `/`
+**Query Params:**
+- `page`: Page number. Default: 1.
+- `per_page`: Number of items per page. Default: 10.
+
+**Response Structure:**
+The response includes metadata (`total`, `pages`, `page`) along with the `tasks` list.
+
+**Example: Get page 2 with 5 tasks per page**
+```bash
+curl "http://localhost:8000/api/tasks/?page=2&per_page=5"
+```
+
+### 6. Get Single Task (GET)
 **Endpoint:** `/<task_id>`
 
 **Curl Example:**
@@ -102,7 +137,7 @@ curl "http://localhost:8000/api/tasks/?page=1&per_page=5"
 curl http://localhost:8000/api/tasks/1
 ```
 
-### 4. Update Task (PUT)
+### 7. Update Task (PUT)
 **Endpoint:** `/<task_id>`
 **Body:** JSON (Partial updates allowed)
 ```json
@@ -117,7 +152,7 @@ curl -X PUT http://localhost:8000/api/tasks/1 \
      -d '{"is_completed": true}'
 ```
 
-### 5. Delete Task (DELETE)
+### 8. Delete Task (DELETE)
 **Endpoint:** `/<task_id>`
 
 **Curl Example:**
